@@ -10,7 +10,8 @@ def input_file_path(default_path):
         path = input(f"Please provide the path to the CSV file ({default_path} by default):")
         # If path is empty we use current folder and file "device_features.csv"
         if path == "":
-            path = "device_features.csv"
+            path = default_path
+            # path = "device_features.csv"
         if os.path.isfile(path):
             print(f"File is found: {path} ")
             file_found = True
@@ -26,7 +27,7 @@ def input_choice(action_list):
         print(f"Press {count} to {action}")
     while True:
         try:
-            choice = int(input(f"Press from 0 to {len(action_list) - 1}: "))
+            choice = int(input(f"Press from 0 to {len(action_list) - 1} (exit): "))
             if choice in range(0, len(action_list)):
                 print()
                 print(f"You choose: {action_list[choice]}")
