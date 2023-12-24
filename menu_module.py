@@ -5,7 +5,7 @@ def input_file_path(default_path, max_path_attempts):
     file_found = False
     path = ""
     i = 1
-    while i <= max_path_attempts and file_found:
+    while i <= max_path_attempts and file_found == False:
         path = input(f"Please provide the path to the CSV file ({default_path} by default):")
         # If path is empty we use current folder and file "device_features.csv"
         if path == "":
