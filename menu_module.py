@@ -1,36 +1,35 @@
-def input_file_path(default_path):
+def input_file_path(default_path, max_path_attempts):
+    # default_path - file name by default
+    # max_path_attempts - max number of attempts to find the file
     import os.path
-    # Query the file path
-    i = 1
-    # The number of attempts to enter value in the loop
     file_found = False
     path = ""
-    max_attempts = 5
-    while i <= max_attempts and file_found == False:
+    i = 1
+    while i <= max_path_attempts and file_found:
         path = input(f"Please provide the path to the CSV file ({default_path} by default):")
         # If path is empty we use current folder and file "device_features.csv"
         if path == "":
             path = default_path
-            # path = "device_features.csv"
         if os.path.isfile(path):
             print(f"File is found: {path} ")
             file_found = True
         else:
-            print(f"There is no file: {path}. You have {max_attempts - i} attempts")
+            print(f"There is no file: {path}. You have {max_path_attempts - i} attempts")
             i += 1
     return path
 
 
-def input_choice(action_list):
+def input_choice(choice_list):
+    # choice_list - dataset with possible menu options
     print()
-    for count, action in enumerate(action_list):
+    for count, action in enumerate(choice_list):
         print(f"Press {count} to {action}")
     while True:
         try:
-            choice = int(input(f"Press from 0 to {len(action_list) - 1} (exit): "))
-            if choice in range(0, len(action_list)):
+            choice = int(input(f"Press from 0 to {len(choice_list) - 1} (exit): "))
+            if choice in range(0, len(choice_list)):
                 print()
-                print(f"You choose: {action_list[choice]}")
+                print(f"You choose: {choice_list[choice]}")
                 break
             else:
                 print()
@@ -51,3 +50,14 @@ def input_value_range(key):
     while max_value <= min_value:
         max_value = float(input(f"Enter maximal value above {min_value}:"))
     return min_value, max_value
+
+
+def input_feature(df, filter_feature):
+    # df - dataset to filter
+    # filter_feature - name of the feature to filter
+    distinct_feature = df[filter_feature].unique()
+    print(f"Choose the {filter_feature} from the following:")
+    print(distinct_feature)
+    # value - value of the feature to filter
+    value = input_value(filter_feature)
+    return value
