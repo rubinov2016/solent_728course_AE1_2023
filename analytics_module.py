@@ -56,7 +56,7 @@ def count_group_two(df, count_feature1, count_feature2, text):
 def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, fig_height, title):
     # df - dataset
     # filter_feature - feature to filter the dataset
-    # count_feature - feature to group the dataset
+    # count_feature - feature to count the dataset
     # text - output text
     import menu_module as menu
     import matplotlib.pyplot as plt
@@ -64,9 +64,9 @@ def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, f
     value = menu.input_feature(df, filter_feature)
     market_df = df[df[filter_feature] == value]
     # Counts for RAM, market and proportion
-    ram_count = market_df[count_feature].value_counts()
-    market_count = len(market_df)
-    ram_proportions = ram_count / market_count
+    count_1 = market_df[count_feature].value_counts()
+    count_2 = len(market_df)
+    ram_proportions = count_1 / count_2
     # Pie chart using matplotlib
     plt.figure(figsize=(fig_width, fig_height))
     plt.subplots_adjust(left=0.2, right=0.8, top=0.8, bottom=0.1)
@@ -74,9 +74,9 @@ def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, f
     plt.pie(ram_proportions, labels=ram_proportions.index, autopct='%1.1f%%',  textprops={'fontsize': fontsize})
     plt.show()
 
-def chart_counted(df, count_feature, fontsize, fig_width,fig_height,  y_label, title):
+def chart_counted(df, count_feature, fontsize, fig_width, fig_height, y_label, title):
     # df - dataset
-    # count_feature - feature to group the dataset
+    # count_feature - feature to count the dataset
     # title - chart title
     import matplotlib.pyplot as plt
     count = df[count_feature].value_counts()
@@ -106,7 +106,7 @@ def chart_monthly_price(
 ):
     # df - dataset
     # filter_feature - feature to filter the dataset
-    # min_year, max_year -  range to filter and group the dataset
+    # min_year, max_year - range to filter and group the dataset
     # count_feature - features to group the dataset
     # average_feature - feature to average the dataset
     # fontsize, fig_width, fig_height, x_label, y_label - to draw the chart
@@ -140,6 +140,9 @@ def chart_metrics_three(
         metrics_name1,
         metrics_name2,
         metrics_name3,
+        metrics_group1,
+        metrics_group2,
+        metrics_group3,
         fig_width,
         fig_height,
         fontsize,
@@ -150,9 +153,9 @@ def chart_metrics_three(
     print()
     phone_df = df.loc[(df[device_category] == device_category_value) & (df[price_category] == price_category_value)]
     grouped_df = phone_df.groupby([released_year, brand]).agg({
-        metrics1: 'mean',
-        metrics2: 'mean',
-        metrics3: 'mean'
+        metrics1: metrics_group1,
+        metrics2: metrics_group2,
+        metrics3: metrics_group3
     }).reset_index()
     input_line = input("Enter two brands separated by a single comma: ")
     try:
@@ -234,8 +237,8 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
                 pie_chart_filtered(
                     df,
                     filter_feature='market_regions',
-                    count_feature ='ram_type',
-                    fontsize =fontsize,
+                    count_feature='ram_type',
+                    fontsize=fontsize,
                     fig_width=fig_width,
                     fig_height=fig_height,
                     title="Proportion of RAM Types in")
@@ -281,9 +284,12 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
                     metrics1='price',
                     metrics2='weight_gram',
                     metrics3='non_volatile_memory_capacity',
-                    metrics_name1='price (USD)',
-                    metrics_name2='weight (grams)',
-                    metrics_name3='memory capacity (Gb)',
+                    metrics_group1='max',
+                    metrics_group2='median',
+                    metrics_group3='median',
+                    metrics_name1='Max price (USD)',
+                    metrics_name2='Median weight (grams)',
+                    metrics_name3='Median memory capacity (Gb)',
                     fig_width=fig_width,
                     fig_height=fig_height,
                     fontsize=fontsize,
