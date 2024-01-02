@@ -304,5 +304,5 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
     except Exception as e:
         print(f"Error: An unexpected error occurred: {e}")
 
-if __name__ == "__main__":
-    analytics_visualize(path="device_features.csv", choice=11, fontsize=9, fig_width=5, fig_height=5)
+# if __name__ == "__main__":
+#     analytics_visualize(path="device_features.csv", choice=11, fontsize=9, fig_width=5, fig_height=5)

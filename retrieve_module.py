@@ -42,18 +42,18 @@ def retrieve(path, condition):
     except Exception as e:
         print(f"Error: An unexpected error occurred: {e}")
 
-if __name__ == "__main__":
-    retrieve_condition = {0: ['oem_id',
-                              ['model', 'manufacturer', 'weight_gram', 'price', 'price_currency'],
-                              False],
-                          1: ['codename',
-                              ['brand', 'model', 'ram_capacity', 'market_regions', 'info_added_date'],
-                              False],
-                          2: ['ram_capacity',
-                              ['oem_id', 'released_date', 'announced_date', 'dimensions', 'device_category'],
-                              False],
-                          # Can work with range of values
-                          3: ['weight_gram',
-                              ['hardware_designer', 'display_diagonal', 'sim_card_slot', 'weight_gram'],
-                              True]}
-    retrieve(path="device_features.csv", condition=retrieve_condition[3])
+# if __name__ == "__main__":
+#     retrieve_condition = {0: ['oem_id',
+#                               ['model', 'manufacturer', 'weight_gram', 'price', 'price_currency'],
+#                               False],
+#                           1: ['codename',
+#                               ['brand', 'model', 'ram_capacity', 'market_regions', 'info_added_date'],
+#                               False],
+#                           2: ['ram_capacity',
+#                               ['oem_id', 'released_date', 'announced_date', 'dimensions', 'device_category'],
+#                               False],
+#                           # Can work with range of values
+#                           3: ['weight_gram',
+#                               ['hardware_designer', 'display_diagonal', 'sim_card_slot', 'weight_gram'],
+#                               True]}
+#     retrieve(path="device_features.csv", condition=retrieve_condition[3])
