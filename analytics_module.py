@@ -1,4 +1,4 @@
-# Find the most popular values after parsing words from string
+# Returns the most popular values after parsing words from string
 def top_features(df, filter_feature, count_feature, top_number, text):
     # df - dataset
     # filter_feature - feature to filter the dataset
@@ -18,7 +18,7 @@ def top_features(df, filter_feature, count_feature, top_number, text):
     print(top_elements)
 
 
-# Average of a feature by grouping & filtering other two feature
+# Returns an average of the feature by grouping & filtering the other two feature
 def avg_group_filter(df, filter_feature, group_feature, avg_feature, text):
     # df - dataset
     # filter_feature - feature to filter the dataset
@@ -33,18 +33,19 @@ def avg_group_filter(df, filter_feature, group_feature, avg_feature, text):
     avg_group(df_filter, group_feature, avg_feature, text)
 
 
-# Average of a feature by grouping another feature
+# Returns an average of the feature by grouping the another feature
 def avg_group(df, group_feature, avg_feature, text):
     # df - dataset
     # group_feature - feature to group the dataset
     # avg_feature - these values should be averaged
     # text - output text
-    average_weight = round(df.groupby([group_feature])[avg_feature].mean(), 2)
+    average = round(df.groupby([group_feature])[avg_feature].mean(), 2)
+    sorted_average = average.sort_values()
     print(text)
-    print(average_weight)
+    print(sorted_average)
 
 
-# Count a feature by grouping two features
+# Counts a feature by grouping two features
 def count_group_two(df, count_feature1, count_feature2, text):
     # df - dataset
     # count_feature1, count_feature2 - features to group the dataset
@@ -53,6 +54,8 @@ def count_group_two(df, count_feature1, count_feature2, text):
     print(text)
     print(device_year)
 
+
+# Visualises a pie chart with proportions
 def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, fig_height, title):
     # df - dataset
     # filter_feature - feature to filter the dataset
@@ -60,10 +63,10 @@ def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, f
     # text - output text
     import menu_module as menu
     import matplotlib.pyplot as plt
-    # Filter by market
+    # Filter by filter_feature
     value = menu.input_feature(df, filter_feature)
     market_df = df[df[filter_feature] == value]
-    # Counts for RAM, market and proportion
+    # Counts for count_feature and length of the whole dataset
     count_1 = market_df[count_feature].value_counts()
     count_2 = len(market_df)
     ram_proportions = count_1 / count_2
@@ -74,6 +77,8 @@ def pie_chart_filtered(df, filter_feature, count_feature, fontsize, fig_width, f
     plt.pie(ram_proportions, labels=ram_proportions.index, autopct='%1.1f%%',  textprops={'fontsize': fontsize})
     plt.show()
 
+
+# Visualises a bar chart
 def chart_counted(df, count_feature, fontsize, fig_width, fig_height, y_label, title):
     # df - dataset
     # count_feature - feature to count the dataset
@@ -88,6 +93,8 @@ def chart_counted(df, count_feature, fontsize, fig_width, fig_height, y_label, t
     plt.xticks(rotation=0, fontsize=fontsize)
     plt.show()
 
+
+# Visualises several annual charts, each for a specific year
 def chart_monthly_price(
         df,
         filter_feature,
@@ -114,7 +121,7 @@ def chart_monthly_price(
     import matplotlib.pyplot as plt
     df_filtered = df[df[filter_feature] == filter_value]
     # Filter dataset by year
-    for year in range(min_year, max_year):
+    for year in range(min_year, max_year+1):
         df_year = df_filtered[df_filtered[count_feature1] == year]
         avg_price_month = df_year.groupby([count_feature1, count_feature2])[average_feature].mean()
         # Visualize
@@ -126,6 +133,9 @@ def chart_monthly_price(
         plt.ylabel(y_label, fontsize=fontsize)
         plt.grid(True)
         plt.show()
+
+
+# Visualises three metrics of two brands
 def chart_metrics_three(
         df,
         device_category,
@@ -187,7 +197,7 @@ def chart_metrics_three(
         print("Error: Please ensure you enter two brands separated by a single comma")
 
 
-# Main function
+# Main entry function
 def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
     # path - filename of dataset
     # choice - menu option selected
@@ -200,9 +210,9 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
         df['released_year'] = df['released_date'].dt.year
         df['released_month'] = df['released_date'].dt.month
         df['market_regions'] = df['market_regions'].tolist()
-        # Main case for menu options
+        # Main case/loop for menu options
         match choice:
-            # Identify the top 5 regions where a specific band of devices was sold.
+            # Identify the top 5 regions where a specific brand of devices was sold.
             case 4:
                 top_features(
                     df=df,
@@ -210,14 +220,14 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
                     count_feature='market_regions',
                     top_number=5,
                     text="Top 5 regions for")
-            # Analyse the average price of devices within a specific band, all in the same currency.
+            # Analyse the average price of devices within a specific brand, all in the same currency.
             case 5:
                 avg_group_filter(
                     df=df,
                     filter_feature='brand',
                     group_feature='price_currency',
                     avg_feature='price',
-                    text='Average prices for each band and currency:')
+                    text='Average price within a specific brand in the same currency:')
             # Analyse the average mass for each manufacturer and display the list of average mass for all manufacturers
             case 6:
                 avg_group(
@@ -225,13 +235,13 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
                     group_feature='manufacturer',
                     avg_feature='weight_gram',
                     text='Average weight for each manufacturer:')
-            # Count the number of released devices by brand
+            # Count the number of released devices by hardware designer
             case 7:
                 count_group_two(
                     df=df,
-                    count_feature1='brand',
+                    count_feature1='hardware_designer',
                     count_feature2='released_year',
-                    text='Number of devices released by manufacture annually:')
+                    text='Number of devices released by hardware designer annually:')
             # Proportion of RAM types for devices in the current market
             case 8:
                 pie_chart_filtered(
@@ -304,5 +314,3 @@ def analytics_visualize(path, choice, fontsize, fig_width, fig_height):
     except Exception as e:
         print(f"Error: An unexpected error occurred: {e}")
 
-# if __name__ == "__main__":
-#     analytics_visualize(path="device_features.csv", choice=11, fontsize=9, fig_width=5, fig_height=5)

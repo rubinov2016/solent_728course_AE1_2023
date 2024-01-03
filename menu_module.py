@@ -1,3 +1,4 @@
+# Returns a file name and path
 def input_file_path(default_path, max_path_attempts):
     # default_path - file name by default
     # max_path_attempts - max number of attempts to find the file
@@ -19,6 +20,7 @@ def input_file_path(default_path, max_path_attempts):
     return path
 
 
+# Returns the index number of the selected menu option
 def input_choice(choice_list):
     # choice_list - dataset with possible menu options
     print()
@@ -26,6 +28,7 @@ def input_choice(choice_list):
         print(f"Press {count} to {action}")
     while True:
         try:
+            print()
             choice = int(input(f"Press from 0 to {len(choice_list) - 1} (exit): "))
             if choice in range(0, len(choice_list)):
                 print()
@@ -35,23 +38,27 @@ def input_choice(choice_list):
                 print()
                 print("Your choice is out of bounds")
         except:
+            print()
             print("That's not a valid option!")
     return choice
 
 
+# Returns a value
 def input_value(key):
     value = input(f"Enter {key}:")
     return value
 
 
+# Returns two values
 def input_value_range(key):
     min_value = float(input(f"Enter minimal value of {key}:"))
-    max_value = min_value
-    while max_value <= min_value:
+    max_value = min_value-1
+    while max_value < min_value:
         max_value = float(input(f"Enter maximal value above {min_value}:"))
     return min_value, max_value
 
 
+# Returns a value
 def input_feature(df, filter_feature):
     # df - dataset to filter
     # filter_feature - name of the feature to filter
